@@ -1,11 +1,14 @@
 # Содержание
 1. [Диаграммы последовательностей](#1)<br>
 1.1 [Добавление путевой точки](#1.1)<br>
-1.2 [б](#1.2)<br>
+1.2 [Обновить точки](#1.2)<br>
 1.3 [в](#1.3)<br>
 1.4 [г](#1.4)<br>
 
 ## 1. Диаграммы последовательностей<a name="1"></a>
 
-### 1. Добавление путевой точки<a name="1.1"></a>
+### 1.1 Добавление путевой точки<a name="1.1"></a>
 ![Добавление путевой точки](https://github.com/NikitaKapitanov750503/NaviSport/blob/master/%D0%94%D0%B8%D0%B0%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D1%8B/Sequence/AddPointWindowSequence.jpg)
+
+### 1.2 Обновить точки<a name="1.1"></a>
+![Обновить точки](https://github.com/NikitaKapitanov750503/NaviSport/blob/master/%D0%94%D0%B8%D0%B0%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D1%8B/Sequence/UpdatepointsSequence.jpg)
