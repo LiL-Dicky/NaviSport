@@ -19,6 +19,23 @@ public class MyLocationListener implements LocationListener {
     private LatLng position;
     private GoogleMap map;
 
+    public void setMap(GoogleMap map) {
+        this.map = map;
+    }
+
+    public void setMyLoc(Marker myLoc) {
+        this.myLoc = myLoc;
+    }
+
+    public void setPosition(LatLng position) {
+        this.position = position;
+    }
+
+    public MyLocationListener() {
+        this.myLocationLongitude = 0;
+        this.myLocationLattitude = 0;
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         showLocation(location);
