@@ -10,6 +10,52 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map"
+        tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <Button
+        android:id="@+id/ButtonLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="36dp"
+        android:onClick="onButtonLocationClicked"
+        android:text="Get location"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/PointMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Add point"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="176dp"
+        tools:layout_editor_absoluteY="31dp" />
+
+    <Button
+        android:id="@+id/Update"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="36dp"
+        android:onClick="onButtonUpdateClicked"
+        android:text="Update points"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

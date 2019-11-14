@@ -2,6 +2,7 @@ package com.example.navisport;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,5 +25,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+    }
+
+    public void onButtonLocationClicked(View view) {
+    }
+
+    public void onButtonUpdateClicked(View view) {
     }
 }
