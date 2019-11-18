@@ -55,6 +55,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         list.setPosition(position);
     }
 
+    private boolean hasPermissions() {
+        int res;
+        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+
+        for (String perms : permissions) {
+            res = checkCallingOrSelfPermission(perms);
+            if (!(res == PackageManager.PERMISSION_GRANTED)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void onButtonLocationClicked(View view) {
     }
 
