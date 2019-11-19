@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,10 +23,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     GoogleMap map;
     private Marker myLoc = null;
-    private LatLng position;
+    private LatLng position = new LatLng(0,0);
     MyLocationListener list = new MyLocationListener();
     private LocationManager locationManager;
 
+    private boolean buttonStatus = true;
     private static final int REQUEST_LOCATION = 2;
 
     @Override
@@ -37,6 +39,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         btnAddPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (buttonStatus) {
+                    onPause();
+                    buttonStatus = false;
+                }
                 Intent intent = new Intent(".AddPoint");
                 startActivity(intent);
             }
@@ -105,6 +111,21 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void onButtonLocationClicked(View view) {
+        if(list.checkEnabled()) {
+            if (buttonStatus) {
+                onPause();
+                buttonStatus = false;
+                Toast.makeText(MainActivity.this, "Navigation is just turned off", Toast.LENGTH_SHORT).show();
+            } else {
+                onResume();
+                buttonStatus = true;
+                Toast.makeText(MainActivity.this, "Navigation is just turned on", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(MainActivity.this, "You need to put on your geolocation", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(
+                    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
     }
 
     public void onButtonUpdateClicked(View view) {

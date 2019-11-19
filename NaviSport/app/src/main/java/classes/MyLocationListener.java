@@ -53,7 +53,6 @@ public class MyLocationListener implements LocationListener {
     public void pause(){
         locationManager.removeUpdates(this);
         myLoc.remove();
-        map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocationLattitude, myLocationLongitude)));
     }
 
     @Override
