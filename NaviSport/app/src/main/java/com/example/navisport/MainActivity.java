@@ -38,6 +38,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         if (!hasPermissions()) {
             requestPerms();
+            onPause();
         } else {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -48,11 +49,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (hasPermissions()) {
+            list.setLocationManager(locationManager);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, list);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 10, list);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(hasPermissions() && list.checkEnabled()) {
+            list.pause();
+        }
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        list.setMap(map);
-        list.setMyLoc(myLoc);
-        list.setPosition(position);
+        if(hasPermissions()) {
+            list.setMap(map);
+            list.setMyLoc(myLoc);
+            list.setPosition(position);
+        }
     }
 
     private boolean hasPermissions() {

@@ -12,12 +12,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MyLocationListener implements LocationListener {
+
     private double myLocationLongitude;
     private double myLocationLattitude;
     private LocationManager locationManager;
     private Marker myLoc = null;
     private LatLng position;
     private GoogleMap map;
+
 
     public void setMap(GoogleMap map) {
         this.map = map;
@@ -64,13 +66,13 @@ public class MyLocationListener implements LocationListener {
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    public void onProviderDisabled(String provider) {}
 
     @Override
     public void onProviderEnabled(String provider) {}
 
     @Override
-    public void onProviderDisabled(String provider) {}
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
     public void showLocation(Location location) {
         if (location == null)
