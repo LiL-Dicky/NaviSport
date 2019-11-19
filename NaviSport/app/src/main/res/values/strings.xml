@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">NaviSport</string>
+    <string name="add_new_point">Add new point</string>
+    <string name="point_on_your_location">Point on your location</string>
+    <string name="creating_a_new_point">Creating a new point</string>
+    <string name="name_of_point">Name of point</string>
+    <string name="longtitude">Longtitude</string>
+    <string name="lattitude">Lattitude</string>
 </resources>
