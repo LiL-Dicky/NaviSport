@@ -36,6 +36,24 @@ public class MyLocationListener implements LocationListener {
         this.myLocationLattitude = 0;
     }
 
+    public void setLocationManager(LocationManager locationManager) {
+        this.locationManager = locationManager;
+    }
+
+    public double getMyLocationLongitude() {
+        return myLocationLongitude;
+    }
+
+    public double getMyLocationLattitude() {
+        return myLocationLattitude;
+    }
+
+    public void pause(){
+        locationManager.removeUpdates(this);
+        myLoc.remove();
+        map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocationLattitude, myLocationLongitude)));
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         showLocation(location);
@@ -65,5 +83,10 @@ public class MyLocationListener implements LocationListener {
             myLocationLattitude = location.getLatitude();
             myLocationLongitude = location.getLongitude();
         }
+    }
+
+    public boolean checkEnabled() {
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 }
