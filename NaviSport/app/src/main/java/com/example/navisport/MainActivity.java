@@ -91,7 +91,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean hasPermissions() {
         int res;
-        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         for (String perms : permissions) {
             res = checkCallingOrSelfPermission(perms);
@@ -103,7 +103,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void requestPerms() {
-        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, REQUEST_LOCATION);
         }
