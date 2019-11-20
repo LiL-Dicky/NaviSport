@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -26,6 +29,53 @@ public class AddPoint extends AppCompatActivity {
         ended.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CheckBox chosen = findViewById(R.id.Chosen_loc);
+                if(chosen.isChecked()){
+                    flag = 1;
+                }else{
+                    flag = 0;
+                }
+                EditText name = findViewById(R.id.Name);
+                EditText lattitude = findViewById(R.id.Lattitude);
+                EditText longtitude = findViewById(R.id.Longtitude);
+                if(lattitude.length() == 0 || longtitude.length() == 0 || name.length() == 0){
+                    if(flag == 1 && name.length() > 0){
+                        String name1 = name.getText().toString();
+                        double lattitude1 = 0;
+                        double longtitude1 = 0;
+                        try {
+                            openText();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if(text != null){
+                            text = text + "@@@   @@@" + flag + "@@@   @@@" + name1 + "@@@   @@@" + lattitude1 + "@@@   @@@" + longtitude1;
+                        }else{
+                            text = flag + "@@@   @@@" + name1 + "@@@   @@@" + lattitude1 + "@@@   @@@" + longtitude1;
+                        }
+                        saveText();
+                        Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(AddPoint.this, "Error adding new point", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    String name1 = name.getText().toString();
+                    double lattitude1 = Double.parseDouble(lattitude.getText().toString());
+                    double longtitude1 = Double.parseDouble(longtitude.getText().toString());
+                    try {
+                        openText();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(text != null){
+                        text = text + "@@@   @@@" + flag + "@@@   @@@" + name1 + "@@@   @@@" + lattitude1 + "@@@   @@@" + longtitude1;
+                    }else{
+                        text = flag + "@@@   @@@" + name1 + "@@@   @@@" + lattitude1 + "@@@   @@@" + longtitude1;
+                    }
+                    saveText();
+                    Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();
+                }
+
                 AddPoint.this.finish();
             }
         });
