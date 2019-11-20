@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -28,6 +29,25 @@ public class AddPoint extends AppCompatActivity {
                 AddPoint.this.finish();
             }
         });
+    }
+
+    public void saveText(){
+
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+        }
+        catch(IOException ex) {System.out.println(ex);}
+        finally{
+            try{
+                if(fos!=null)
+                    fos.close();
+            }
+            catch(IOException ex){
+                System.out.println(ex);
+            }
+        }
     }
 
     public void openText() throws IOException {
