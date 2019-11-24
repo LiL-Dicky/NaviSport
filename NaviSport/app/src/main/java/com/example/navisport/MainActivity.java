@@ -35,10 +35,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng position = new LatLng(0,0);
     MyLocationListener list = new MyLocationListener();
     private LocationManager locationManager;
+    private boolean updateFlag = false;
 
     private boolean buttonStatus = true;
     private static final int REQUEST_LOCATION = 2;
     private ArrayList<Point> listPoints = new ArrayList<>();
+    private ArrayList<Marker> markers = new ArrayList<>();
     private final static String FILE_NAME = "pos.txt";
     private String text;
 
@@ -137,6 +139,26 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void onButtonUpdateClicked(View view) {
+        if(!updateFlag) {
+            if(markers.size() != 0) {
+                for (int i = 0; i < markers.size(); i++) {
+                    Marker mrk = markers.get(i);
+                    mrk.remove();
+                }
+            }
+            try {
+                openText();
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "Error: file is not readen", Toast.LENGTH_SHORT).show();
+            }
+            if (listPoints.get(0).getName().length() != 0) {
+
+            } else {
+                Toast.makeText(MainActivity.this, "Error: file is empty", Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            Toast.makeText(MainActivity.this, "File is already readen", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void saveText(){
