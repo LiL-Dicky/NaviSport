@@ -1,5 +1,8 @@
 package com.example.navisport;
 
+import classes.MyLocationListener;
+import classes.Point;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,8 +17,10 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -25,24 +30,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import classes.MyLocationListener;
-import classes.Point;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
-
-    GoogleMap map;
-    private Marker myLoc = null;
-    private LatLng position = new LatLng(0,0);
-    MyLocationListener list = new MyLocationListener();
-    private LocationManager locationManager;
+    private ArrayList<Marker> markers = new ArrayList<>();
+    private ArrayList<Point> listPoints = new ArrayList<>();
+    private final static String FILE_NAME = "contyyt.txt";
+    private String text;
     private boolean updateFlag = false;
 
-    private boolean buttonStatus = true;
     private static final int REQUEST_LOCATION = 2;
-    private ArrayList<Point> listPoints = new ArrayList<>();
-    private ArrayList<Marker> markers = new ArrayList<>();
-    private final static String FILE_NAME = "pos.txt";
-    private String text;
+    GoogleMap map;
+    MyLocationListener list = new MyLocationListener();
+    private LocationManager locationManager;
+    private boolean buttonStatus = true;
+    LatLng position;
+    Marker myLoc = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +57,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 if (buttonStatus) {
-                    pause();
-                    buttonStatus = false;
+                    updateFlag = false;
+                    onPause();
                 }
                 Intent intent = new Intent(".AddPoint");
                 startActivity(intent);
@@ -66,24 +69,30 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-        if (!hasPermissions()) {
+        if(!hasPermissions()) {
             requestPerms();
-            pause();
-        } else {
+            onPause();
+            buttonStatus = false;
+        }
+        else {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             list.showLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
         }
     }
 
-    protected void resume() {
-        if (hasPermissions()) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(hasPermissions()) {
             list.setLocationManager(locationManager);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, list);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 10, list);
         }
     }
 
-    protected void pause() {
+    @Override
+    protected void onPause() {
+        super.onPause();
         if(hasPermissions() && list.checkEnabled()) {
             list.pause();
         }
@@ -120,14 +129,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         this.finish();
     }
 
-    public void onButtonLocationClicked(View view) {
+    public void onButtonLocationClicked(View v){
         if(list.checkEnabled()) {
             if (buttonStatus) {
-                pause();
+                onPause();
                 buttonStatus = false;
                 Toast.makeText(MainActivity.this, "Navigation is just turned off", Toast.LENGTH_SHORT).show();
             } else {
-                resume();
+                onResume();
                 buttonStatus = true;
                 Toast.makeText(MainActivity.this, "Navigation is just turned on", Toast.LENGTH_SHORT).show();
             }
@@ -138,7 +147,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void onButtonUpdateClicked(View view) {
+    public void onButtonUpdateClicked(View v){
         if(!updateFlag) {
             if(markers.size() != 0) {
                 for (int i = 0; i < markers.size(); i++) {
@@ -149,10 +158,28 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 openText();
             } catch (Exception e) {
-                Toast.makeText(MainActivity.this, "Error: file is not readen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Error: file is not readed", Toast.LENGTH_SHORT).show();
             }
             if (listPoints.get(0).getName().length() != 0) {
-
+                text = null;
+                if (listPoints.size() == 0) {
+                    Toast.makeText(MainActivity.this, "Error: file is empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    for (int i = 0; i < listPoints.size(); i++) {
+                        markers.add(map.addMarker(new MarkerOptions().position(new LatLng(listPoints.get(i).getLattitude(),
+                                listPoints.get(i).getLongtitude())).title(listPoints.get(i).getName())
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
+                        if (text != null) {
+                            text = text + "@@@   @@@" + listPoints.get(i).getFlag() + "@@@   @@@" + listPoints.get(i).getName()
+                                    + "@@@   @@@" + listPoints.get(i).getLattitude() + "@@@   @@@" + listPoints.get(i).getLongtitude();
+                        } else {
+                            text = listPoints.get(i).getFlag() + "@@@   @@@" + listPoints.get(i).getName() + "@@@   @@@"
+                                    + listPoints.get(i).getLattitude() + "@@@   @@@" + listPoints.get(i).getLongtitude();
+                        }
+                    }
+                    saveText();
+                    updateFlag = true;
+                }
             } else {
                 Toast.makeText(MainActivity.this, "Error: file is empty", Toast.LENGTH_SHORT).show();
             }
@@ -180,7 +207,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void openText() throws Exception {
+    public void openText() throws IOException {
         FileInputStream fin = null;
         try {
             fin = openFileInput(FILE_NAME);
