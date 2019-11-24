@@ -20,6 +20,8 @@ import com.google.android.gms.maps.model.Marker;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -50,7 +52,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 if (buttonStatus) {
-                    onPause();
+                    pause();
                     buttonStatus = false;
                 }
                 Intent intent = new Intent(".AddPoint");
@@ -64,16 +66,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         if (!hasPermissions()) {
             requestPerms();
-            onPause();
+            pause();
         } else {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             list.showLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    protected void resume() {
         if (hasPermissions()) {
             list.setLocationManager(locationManager);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, list);
@@ -81,9 +81,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    protected void pause() {
         if(hasPermissions() && list.checkEnabled()) {
             list.pause();
         }
@@ -123,11 +121,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onButtonLocationClicked(View view) {
         if(list.checkEnabled()) {
             if (buttonStatus) {
-                onPause();
+                pause();
                 buttonStatus = false;
                 Toast.makeText(MainActivity.this, "Navigation is just turned off", Toast.LENGTH_SHORT).show();
             } else {
-                onResume();
+                resume();
                 buttonStatus = true;
                 Toast.makeText(MainActivity.this, "Navigation is just turned on", Toast.LENGTH_SHORT).show();
             }
@@ -139,6 +137,25 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void onButtonUpdateClicked(View view) {
+    }
+
+    public void saveText(){
+
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(text.getBytes());
+        }
+        catch(IOException ex) {System.out.println(ex);}
+        finally{
+            try{
+                if(fos!=null)
+                    fos.close();
+            }
+            catch(IOException ex){
+                System.out.println(ex);
+            }
+        }
     }
 
     public void openText() throws Exception {
