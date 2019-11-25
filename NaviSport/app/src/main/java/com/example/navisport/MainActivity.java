@@ -30,11 +30,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<Marker> markers = new ArrayList<>();
     private ArrayList<Point> listPoints = new ArrayList<>();
-    private final static String FILE_NAME = "contyyt.txt";
+    private final static String FILE_NAME = "pos.txt";
     private String text;
     private boolean updateFlag = false;
 
@@ -58,6 +60,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 if (buttonStatus) {
                     updateFlag = false;
+                    pause();
                     onPause();
                 }
                 Intent intent = new Intent(".AddPoint");
@@ -71,6 +74,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         if(!hasPermissions()) {
             requestPerms();
+            pause();
             onPause();
             buttonStatus = false;
         }
@@ -90,9 +94,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    protected void pause() {
         if(hasPermissions() && list.checkEnabled()) {
             list.pause();
         }
@@ -102,6 +104,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         if(hasPermissions()) {
+            map.setMapType(MAP_TYPE_SATELLITE);
             list.setMap(map);
             list.setMyLoc(myLoc);
             list.setPosition(position);
@@ -132,7 +135,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onButtonLocationClicked(View v){
         if(list.checkEnabled()) {
             if (buttonStatus) {
-                onPause();
+                pause();
                 buttonStatus = false;
                 Toast.makeText(MainActivity.this, "Navigation is just turned off", Toast.LENGTH_SHORT).show();
             } else {
@@ -140,7 +143,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 buttonStatus = true;
                 Toast.makeText(MainActivity.this, "Navigation is just turned on", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             Toast.makeText(MainActivity.this, "You need to put on your geolocation", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(
                     android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
