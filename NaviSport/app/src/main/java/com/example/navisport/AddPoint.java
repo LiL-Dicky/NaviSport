@@ -83,7 +83,6 @@ public class AddPoint extends AppCompatActivity {
     }
 
     public void saveText(){
-
         FileOutputStream fos = null;
         try {
             fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
@@ -102,10 +101,7 @@ public class AddPoint extends AppCompatActivity {
     }
 
     public void openText() throws IOException {
-
-        FileInputStream fin = openFileInput(FILE_NAME);
-        InputStreamReader reader = new InputStreamReader(fin);
-        BufferedReader buffer = new BufferedReader(reader);
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(openFileInput(FILE_NAME)));
         StringBuilder str = new StringBuilder();
         while((text = buffer.readLine()) != null){
             str.append(text).append("\n");

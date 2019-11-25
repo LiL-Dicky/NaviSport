@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -152,6 +153,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void onButtonUpdateClicked(View v){
+        boolean readflag = true;
         if(!updateFlag) {
             if(markers.size() != 0) {
                 for (int i = 0; i < markers.size(); i++) {
@@ -162,9 +164,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 openText();
             } catch (Exception e) {
-                Toast.makeText(MainActivity.this, "Error: file is not readed", Toast.LENGTH_SHORT).show();
+                readflag = false;
             }
-            if (listPoints.get(0).getName().length() != 0) {
+            if (readflag) {
                 text = null;
                 if (listPoints.size() == 0) {
                     Toast.makeText(MainActivity.this, "Error: file is empty", Toast.LENGTH_SHORT).show();
@@ -185,15 +187,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     updateFlag = true;
                 }
             } else {
-                Toast.makeText(MainActivity.this, "Error: file is empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Error: file is not readen", Toast.LENGTH_SHORT).show();
             }
-        }else {
+        } else {
             Toast.makeText(MainActivity.this, "File is already readen", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void saveText(){
-
         FileOutputStream fos = null;
         try {
             fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
@@ -211,16 +212,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void openText() throws IOException {
-        FileInputStream fin = null;
+    public void openText() throws Exception {
+        FileInputStream fin;
         try {
             fin = openFileInput(FILE_NAME);
-        } catch (FileNotFoundException e) {
-            Toast.makeText(MainActivity.this, "Error: file", Toast.LENGTH_SHORT).show();
+        } catch (Exception e){
+            throw e;
         }
         text = null;
-        InputStreamReader reader = new InputStreamReader(fin);
-        BufferedReader buffer = new BufferedReader(reader);
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(fin));
         StringBuilder str = new StringBuilder();
         while ((text = buffer.readLine()) != null) {
             str.append(text).append(" ");
@@ -247,9 +247,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     listPoints.add(new Point(0, name, list.getMyLocationLattitude(), list.getMyLocationLongitude()));
                 }
             }
-            Toast.makeText(MainActivity.this, "File readed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(MainActivity.this, "Error: file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "File readen", Toast.LENGTH_SHORT).show();
         }
     }
 }
