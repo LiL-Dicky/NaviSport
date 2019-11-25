@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 public class AddPoint extends AppCompatActivity {
 
     private final static String FILE_NAME = "pos.txt";
+    private final static String FREE_SPACE = "@@@   @@@";
     private String text;
     int flag = 0;
 
@@ -49,9 +50,9 @@ public class AddPoint extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         if(text != null){
-                            text = text + "@@@   @@@" + flag + "@@@   @@@" + name1 + "@@@   @@@" + lattitude1 + "@@@   @@@" + longtitude1;
+                            text = text + FREE_SPACE + flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
                         }else{
-                            text = flag + "@@@   @@@" + name1 + "@@@   @@@" + lattitude1 + "@@@   @@@" + longtitude1;
+                            text = flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
                         }
                         saveText();
                         Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();
@@ -68,9 +69,9 @@ public class AddPoint extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     if(text != null){
-                        text = text + "@@@   @@@" + flag + "@@@   @@@" + name1 + "@@@   @@@" + lattitude1 + "@@@   @@@" + longtitude1;
+                        text = text + FREE_SPACE + flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
                     }else{
-                        text = flag + "@@@   @@@" + name1 + "@@@   @@@" + lattitude1 + "@@@   @@@" + longtitude1;
+                        text = flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
                     }
                     saveText();
                     Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();

@@ -37,6 +37,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Marker> markers = new ArrayList<>();
     private ArrayList<Point> listPoints = new ArrayList<>();
     private final static String FILE_NAME = "pos.txt";
+    private final static String FREE_SPACE = "@@@   @@@";
     private String text;
     private boolean updateFlag = false;
 
@@ -173,11 +174,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                                 listPoints.get(i).getLongtitude())).title(listPoints.get(i).getName())
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
                         if (text != null) {
-                            text = text + "@@@   @@@" + listPoints.get(i).getFlag() + "@@@   @@@" + listPoints.get(i).getName()
-                                    + "@@@   @@@" + listPoints.get(i).getLattitude() + "@@@   @@@" + listPoints.get(i).getLongtitude();
+                            text = text + FREE_SPACE + listPoints.get(i).getFlag() + FREE_SPACE + listPoints.get(i).getName()
+                                    + FREE_SPACE + listPoints.get(i).getLattitude() + FREE_SPACE + listPoints.get(i).getLongtitude();
                         } else {
-                            text = listPoints.get(i).getFlag() + "@@@   @@@" + listPoints.get(i).getName() + "@@@   @@@"
-                                    + listPoints.get(i).getLattitude() + "@@@   @@@" + listPoints.get(i).getLongtitude();
+                            text = listPoints.get(i).getFlag() + FREE_SPACE + listPoints.get(i).getName() + FREE_SPACE
+                                    + listPoints.get(i).getLattitude() + FREE_SPACE + listPoints.get(i).getLongtitude();
                         }
                     }
                     saveText();
@@ -230,7 +231,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         double lattitude;
         double longtitude;
         if (str.length() != 0) {
-            arr = str.toString().split("@@@   @@@");
+            arr = str.toString().split(FREE_SPACE);
             for (int i = 0; i < arr.length; i++) {
                 flag = Integer.parseInt(arr[i]);
                 i++;
