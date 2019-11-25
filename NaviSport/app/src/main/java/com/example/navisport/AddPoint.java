@@ -41,45 +41,42 @@ public class AddPoint extends AppCompatActivity {
                 EditText longtitude = findViewById(R.id.Longtitude);
                 if(lattitude.length() == 0 || longtitude.length() == 0 || name.length() == 0){
                     if(flag == 1 && name.length() > 0){
-                        String name1 = name.getText().toString();
-                        double lattitude1 = 0;
-                        double longtitude1 = 0;
-                        try {
-                            openText();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if(text != null){
-                            text = text + FREE_SPACE + flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
-                        }else{
-                            text = flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
-                        }
-                        saveText();
-                        Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();
+                        addUp(name, lattitude, longtitude);
                     }else {
                         Toast.makeText(AddPoint.this, "Error adding new point", Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    String name1 = name.getText().toString();
-                    double lattitude1 = Double.parseDouble(lattitude.getText().toString());
-                    double longtitude1 = Double.parseDouble(longtitude.getText().toString());
-                    try {
-                        openText();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if(text != null){
-                        text = text + FREE_SPACE + flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
-                    }else{
-                        text = flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
-                    }
-                    saveText();
-                    Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();
+                } else {
+                    addUp(name, lattitude, longtitude);
                 }
 
                 AddPoint.this.finish();
             }
         });
+    }
+
+    private void addUp(EditText name, EditText lattitude, EditText longtitude){
+        String name1 = name.getText().toString();
+        double lattitude1 = 0;
+        double longtitude1 = 0;
+        if (flag == 0) {
+            lattitude1 = Double.parseDouble(lattitude.getText().toString());
+            longtitude1 = Double.parseDouble(longtitude.getText().toString());
+        }
+        boolean emptyFileFlag = false;
+        try {
+            openText();
+        } catch (IOException e) {
+            emptyFileFlag = true;
+        }
+        if (!emptyFileFlag) {
+            if (text != null) {
+                text = text + FREE_SPACE + flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
+            } else {
+                text = flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
+            }
+            saveText();
+            Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void saveText(){
@@ -102,9 +99,9 @@ public class AddPoint extends AppCompatActivity {
 
     public void openText() throws IOException {
         BufferedReader buffer = new BufferedReader(new InputStreamReader(openFileInput(FILE_NAME)));
-        StringBuilder str = new StringBuilder();
+        StringBuilder infoFromFile = new StringBuilder();
         while((text = buffer.readLine()) != null){
-            str.append(text).append("\n");
+            infoFromFile.append(text).append("\n");
         }
     }
 }

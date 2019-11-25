@@ -221,17 +221,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
         text = null;
         BufferedReader buffer = new BufferedReader(new InputStreamReader(fin));
-        StringBuilder str = new StringBuilder();
+        StringBuilder infoFromFile = new StringBuilder();
         while ((text = buffer.readLine()) != null) {
-            str.append(text).append(" ");
+            infoFromFile.append(text).append(" ");
         }
         String[] arr;
         String name;
         int flag;
         double lattitude;
         double longtitude;
-        if (str.length() != 0) {
-            arr = str.toString().split(FREE_SPACE);
+        if (infoFromFile.length() != 0) {
+            arr = infoFromFile.toString().split(FREE_SPACE);
             for (int i = 0; i < arr.length; i++) {
                 flag = Integer.parseInt(arr[i]);
                 i++;
