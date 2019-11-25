@@ -39,9 +39,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private final static String FREE_SPACE = "@@@   @@@";
     private String text;
     private boolean updateFlag = false;
+    private String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private static final int REQUEST_LOCATION = 2;
-    GoogleMap map;
+    private GoogleMap map;
     MyLocationListener list = new MyLocationListener();
     private LocationManager locationManager;
     private boolean buttonStatus = true;
@@ -116,8 +118,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean hasPermissions() {
         int res;
-        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
         for (String perms : permissions) {
             res = checkCallingOrSelfPermission(perms);
             if (!(res == PackageManager.PERMISSION_GRANTED)) {
@@ -128,7 +128,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void requestPerms() {
-        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, REQUEST_LOCATION);
         }
@@ -139,13 +138,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if(list.checkEnabled()) {
             if (buttonStatus) {
                 pause();
-                buttonStatus = false;
                 Toast.makeText(MainActivity.this, "Navigation is just turned off", Toast.LENGTH_SHORT).show();
             } else {
                 onResume();
-                buttonStatus = true;
                 Toast.makeText(MainActivity.this, "Navigation is just turned on", Toast.LENGTH_SHORT).show();
             }
+            buttonStatus = !buttonStatus;
         } else {
             Toast.makeText(MainActivity.this, "You need to put on your geolocation", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(
