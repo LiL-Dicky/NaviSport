@@ -41,7 +41,7 @@ public class AddPoint extends AppCompatActivity {
                 if(lattitude.length() == 0 || longtitude.length() == 0 || name.length() == 0){
                     if(flag == 1 && name.length() > 0){
                         addUp(name, lattitude, longtitude);
-                    }else {
+                    } else {
                         Toast.makeText(AddPoint.this, "Error adding new point", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -61,21 +61,18 @@ public class AddPoint extends AppCompatActivity {
             lattitude1 = Double.parseDouble(lattitude.getText().toString());
             longtitude1 = Double.parseDouble(longtitude.getText().toString());
         }
-        boolean emptyFileFlag = false;
         try {
             openText();
         } catch (IOException e) {
-            emptyFileFlag = true;
+            e.printStackTrace();
         }
-        if (!emptyFileFlag) {
-            if (text != null) {
-                text = text + FREE_SPACE + flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
-            } else {
-                text = flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
-            }
-            saveText();
-            Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();
+        if (text != null) {
+            text = text + FREE_SPACE + flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
+        } else {
+            text = flag + FREE_SPACE + name1 + FREE_SPACE + lattitude1 + FREE_SPACE + longtitude1;
         }
+        saveText();
+        Toast.makeText(AddPoint.this, "Successfully added a new point", Toast.LENGTH_SHORT).show();
     }
 
     public void saveText(){
