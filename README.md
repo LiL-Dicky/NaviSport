@@ -16,4 +16,4 @@
 
 [Код программы](https://github.com/NikitaKapitanov750503/NaviSport/tree/master/NaviSport/app/src/main/java)
 
-[Тестирование]()
+[Тестирование](#)
