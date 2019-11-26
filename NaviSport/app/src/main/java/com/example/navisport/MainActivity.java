@@ -60,11 +60,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         btnAddPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (buttonStatus) {
-                    updateFlag = false;
-                    pause();
-                    onPause();
-                }
+                updateFlag = false;
+                pause();
+                onPause();
                 Intent intent = new Intent(".AddPoint");
                 startActivity(intent);
             }
